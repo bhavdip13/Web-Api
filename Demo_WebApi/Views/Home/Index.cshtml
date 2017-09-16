@@ -1,0 +1,366 @@
+﻿<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- add thids links for the error message-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/1.3.1/css/toastr.css" />
+<script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/1.3.1/js/toastr.js"></script>
+
+
+<!--add this link for the datatable-->
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    .red_border {
+        border: 1px solid #e46262;
+    }
+
+    .LoadingDiv {
+        top: 0;
+        left: 0;
+        position: fixed;
+        opacity: 0.97;
+        z-index: 10000000;
+        background: Black;
+        height: 100%;
+        width: 100%;
+        margin: auto;
+    }
+
+    .dataTables_filter {
+        float: right;
+    }
+</style>
+<div id="dvLoader" class="LoadingDiv" style="display: none;">
+    <table style="height: 100%; margin: auto;">
+        <tr>
+            <td style="vertical-align: middle;">
+                <center>
+                        <img src="http://www.girlsgotit.org/images/ajax-loader.gif"  alt="Loading" />
+                    </center>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="body">
+
+    <section class="content-wrapper main-content clear-fix">
+        <h3>CRUD Opration Using Web APi</h3>
+        you want to call this service then you should click on this particular service
+        <ol class="round">
+
+            <li class="one">
+                <h5><a style="cursor: pointer" data-toggle="modal" data-target="#AddProduct_Model">Add Product</a></h5>
+                In this Api have three parameter for the insert recored.
+                  in this service ajax call type:POST
+            </li>
+            <li class="two">
+                <h5><a id="GetAllProduct" style="cursor: pointer">Get All Product</a></h5>
+                this service has no any paramer call this serviec in url like this:<b> api/product</b>
+                in this service ajax call type:GET
+            </li>
+
+            <li class="three">
+                <h5><a id="GetAllProductbyid" style="cursor: pointer">Get Product by Id</a></h5>
+                this service has no any paramer call this serviec in url like this:<b> api/product/5</b>
+            </li>
+            <li class="four">
+                <h5><a data-toggle="modal" data-target="#UpdateProduct_Model" style="cursor: pointer">Update Product By Id</a></h5>
+                this service has three parameter call this serviec in url like this:<b> api/product/5</b>
+                in this service ajax call type:PUT
+            </li>
+            <li class="five">
+                <h5><a id="DeleteProduct" style="cursor: pointer">Delete Product By Id</a></h5>
+                this service has one parameter call this serviec in url like this:<b> api/product/5</b>
+                in this service ajax call type:DELETE
+            </li>
+        </ol>
+    </section>
+</div>
+
+<!-- Modal add product -->
+<div id="AddProduct_Model" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Product</h4>
+            </div>
+            <div class="modal-body">
+                Product Name :<input type="text" id="txtName" class="form-control required" />
+                Product Description :<textarea id="txtDesc" class="form-control required"></textarea>
+                Product Price :<input type="text" id="txtPrice" onkeypress="return isNumberKey(event)" class="form-control required" />
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnSave">Save</button>
+
+                <button type="button" class="btn btn-danger" onclick="clear();" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Show product Data-->
+<div id="GetData" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Show Product Data</h4>
+            </div>
+            <div class="modal-body">
+                <p id="idjson"></p>
+
+            </div>
+            <div class="modal-footer">
+
+                <a style="float: left; color: #3791cc" href="api/product">click hear to show xml response.</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Show product Data by Id-->
+<div id="GetDatabyid" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Show Product Data by ID</h4>
+            </div>
+            <div class="modal-body">
+                <p id="idjsonbyid"></p>
+
+            </div>
+            <div class="modal-footer">
+
+                <a style="float: left; color: #3791cc" href="api/product/5">click hear to show xml response by id.</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Modal Update product -->
+<div id="UpdateProduct_Model" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update Product of ID 5</h4>
+            </div>
+            <div class="modal-body">
+                Product Name :<input type="text" id="txtName2" class="form-control " />
+                Product Description :<textarea id="txtDesc2" class="form-control "></textarea>
+                Product Price :<input type="text" id="txtPrice2" onkeypress="return isNumberKey(event)" class="form-control " />
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnUpdate">Update</button>
+
+                <button type="button" class="btn btn-danger" onclick="clear();" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#toast-container').find('.toast-top-center').removeClass('.toast-top-center');
+        toastr.options = {
+            "closeButton": true,
+            'autoWidth': false,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        $("#btnSave").click(function () {
+            debugger
+            var PID = 0;
+            var Name = $("#txtName").val();
+            var Desc = $("#txtDesc").val();
+            var Price = parseFloat($("#txtPrice").val()).toFixed(2);
+            if (CheckRequiredFields()) {
+
+                $('#dvLoader').show();
+                $.ajax({
+                    url: '@Url.Action("Product", "Api")',
+                    type: 'POST',
+                    data: JSON.stringify({ "PID": parseInt(PID), "Name": Name, "Description": Desc, "price": Price }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+
+                        $('#dvLoader').hide();
+                        jQuery.noConflict();
+                        $('#AddProduct_Model').modal('hide');
+                        toastr.success("product insert successfull");
+                        clear();
+
+
+                    }
+                });
+
+            }
+
+        });
+        $("#GetAllProduct").click(function () {
+            $.ajax({
+                url: '@Url.Action("Product", "Api")',
+                type: 'GET',
+                // data: JSON.stringify({  }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    jQuery.noConflict();
+
+                    $("#idjson").text(JSON.stringify(result));
+                    $('#GetData').modal('show');
+
+                }
+            });
+
+        });
+
+        $("#GetAllProductbyid").click(function () {
+
+
+            $.ajax({
+                url: 'api/product/5',
+                type: 'GET',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+
+                    jQuery.noConflict();
+                    $("#idjsonbyid").text(JSON.stringify(result));
+                    $('#GetDatabyid').modal('show');
+
+                }
+            });
+
+        });
+
+        $("#btnUpdate").click(function () {
+            var PID = 5;
+            var Name = $("#txtName2").val();
+            var Desc = $("#txtDesc2").val();
+            var Price = parseFloat($("#txtPrice2").val()).toFixed(2);
+
+            $('#dvLoader').show();
+            $.ajax({
+                url: 'api/product/5',
+                type: 'PUT',
+                data: JSON.stringify({ "PID": parseInt(PID), "Name": Name, "Description": Desc, "price": Price }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    $('#dvLoader').hide();
+
+                    $('#UpdateProduct_Model').modal('hide');
+
+                    toastr.success("product updated successfully.");
+                    clear2();
+
+
+                }
+            });
+
+
+
+        });
+        $("#DeleteProduct").click(function () {
+
+            $.ajax({
+                url: 'api/product/5',
+                method: 'DELETE',
+                contentType: 'application/json',
+                success: function (result) {
+                    toastr.success("product Deleted successfull");
+                },
+                error: function (request, msg, error) {
+                    // handle failure
+                }
+            });
+
+
+
+        });
+    });
+    function CheckRequiredFields() {
+        var isValid = true;
+        $('.required').each(function () {
+            if ($.trim($(this).val()) == '') {
+                isValid = false;
+                $(this).addClass('red_border');
+
+
+            }
+            else {
+                $(this).removeClass('red_border');
+
+            }
+        });
+        return isValid;
+    }
+    function clear() {
+        $("#txtName").val("");
+        $("#txtDesc").val("");
+        $("#txtPrice").val("");
+
+
+    }
+    function clear2() {
+        $("#txtName2").val("");
+        $("#txtDesc2").val("");
+        $("#txtPrice2").val("");
+
+
+    }
+    function isNumberKey(evt) {
+        var charcode = (evt.which) ? evt.which : evt.keycode
+        if (charcode > 31 && (charcode < 48 || charcode > 58)
+            && evt.keyCode != 35 && evt.keyCode != 36 && evt.keyCode != 37
+            && evt.keyCode != 38 && evt.keyCode != 39 && evt.keyCode != 40
+            && evt.keyCode != 46) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+</script>
